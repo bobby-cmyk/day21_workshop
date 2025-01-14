@@ -12,4 +12,9 @@ public class Queries {
         SELECT * FROM customers
         WHERE id = ?      
     """;
+
+    public static final String SQL_GET_ORDERS_BY_CUSTOMER_ID = """
+        SELECT * FROM orders
+        WHERE customer_id = ?        
+    """;
 }

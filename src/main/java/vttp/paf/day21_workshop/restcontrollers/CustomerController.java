@@ -1,7 +1,6 @@
 package vttp.paf.day21_workshop.restcontrollers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,17 +13,22 @@ import jakarta.json.JsonArrayBuilder;
 import jakarta.json.JsonObject;
 import jakarta.json.JsonObjectBuilder;
 import vttp.paf.day21_workshop.models.Customer;
+import vttp.paf.day21_workshop.models.Order;
 import vttp.paf.day21_workshop.services.CustomerService;
+import vttp.paf.day21_workshop.services.OrderService;
 
-import static vttp.paf.day21_workshop.models.Customer.*;
-
+import java.util.List;
 import java.util.Optional;
 
 @RestController
 @RequestMapping("/api")
 public class CustomerController {
+    
     @Autowired
     private CustomerService customerSvc;
+
+    @Autowired
+    private OrderService orderSvc;
 
     @GetMapping("/customers")
     public ResponseEntity<String> getCustomers(
@@ -35,7 +39,7 @@ public class CustomerController {
         JsonArrayBuilder arrBuilder = Json.createArrayBuilder();
 
         customerSvc.getCustomers(limit, offset).stream()
-            .map(r -> toJsonObject(r))
+            .map(r -> r.toJsonObject())
             .forEach(j -> arrBuilder.add(j));
 
         return ResponseEntity.ok(arrBuilder.build().toString());
@@ -56,11 +60,37 @@ public class CustomerController {
                 .add("status", "404")
                 .build();
 
-            return ResponseEntity.status(HttpStatusCode.valueOf(404)).body(jsonObj.toString());
+            return ResponseEntity.status(404).body(jsonObj.toString());
         }
 
         Customer customer = opt.get();
 
-        return ResponseEntity.ok().body(toJsonObject(customer).toString());
+        return ResponseEntity.ok().body(customer.toJsonObject().toString());
+    }
+
+    @GetMapping("/customer/{customerId}/orders")
+    public ResponseEntity<String> getOrdersByCustomerId(
+        @PathVariable(name="customerId", required=true) int customerId
+    ) 
+    {
+        Optional<List<Order>> opt = orderSvc.getOrdersByCustomerId(customerId);
+
+        if (opt.isEmpty()) {
+            JsonObjectBuilder objBuilder = Json.createObjectBuilder();
+            JsonObject jsonObj = objBuilder.add("message", "Customer id does not exist")
+                .add("status", "404")
+                .build();
+            return ResponseEntity.status(404).body(jsonObj.toString()); 
+        }
+
+        List<Order> orders = opt.get();
+
+        JsonArrayBuilder arrBuilder = Json.createArrayBuilder();
+
+        orders.stream()
+            .map(r -> r.toJsonObject())
+            .forEach(j -> arrBuilder.add(j));
+
+        return ResponseEntity.ok().body(arrBuilder.build().toString());
     }
 }

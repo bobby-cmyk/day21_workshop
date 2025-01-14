@@ -172,28 +172,28 @@ public class Customer {
         return c;
     }
 
-    public static JsonObject toJsonObject(Customer c) {
+    public JsonObject toJsonObject() {
         JsonObjectBuilder objBuilder = Json.createObjectBuilder();
     
-        objBuilder.add("id", c.getId());
-        objBuilder.add("last_name", c.getLastName() != null ? c.getLastName() : "");
-        objBuilder.add("first_name", c.getFirstName() != null ? c.getFirstName() : "");
-        objBuilder.add("email_address", c.getEmailAddress() != null ? c.getEmailAddress() : "");
-        objBuilder.add("job_title", c.getJobTitle() != null ? c.getJobTitle() : "");
-        objBuilder.add("business_phone", c.getBusinessPhone() != null ? c.getBusinessPhone() : "");
-        objBuilder.add("mobile_phone", c.getMobilePhone() != null ? c.getMobilePhone() : "");
-        objBuilder.add("fax_number", c.getFaxNumber() != null ? c.getFaxNumber() : "");
-        objBuilder.add("address", c.getAddress() != null ? c.getAddress() : "");
-        objBuilder.add("city", c.getCity() != null ? c.getCity() : "");
-        objBuilder.add("state_province", c.getStateProvince() != null ? c.getStateProvince() : "");
-        objBuilder.add("zip_postal_code", c.getZipPostalCode() != null ? c.getZipPostalCode() : "");
-        objBuilder.add("country_region", c.getCountryRegion() != null ? c.getCountryRegion() : "");
-        objBuilder.add("web_page", c.getWebPage() != null ? c.getWebPage() : "");
-        objBuilder.add("notes", c.getNotes() != null ? c.getNotes() : "");
+        objBuilder.add("id", id);
+        objBuilder.add("last_name", lastName != null ? Json.createValue(lastName) : JsonValue.NULL);
+        objBuilder.add("first_name", firstName != null ? Json.createValue(firstName) : JsonValue.NULL);
+        objBuilder.add("email_address", emailAddress != null ? Json.createValue(emailAddress) : JsonValue.NULL);
+        objBuilder.add("job_title", jobTitle != null ? Json.createValue(jobTitle) : JsonValue.NULL);
+        objBuilder.add("business_phone", businessPhone != null ? Json.createValue(businessPhone) : JsonValue.NULL);
+        objBuilder.add("mobile_phone", mobilePhone != null ? Json.createValue(mobilePhone) : JsonValue.NULL);
+        objBuilder.add("fax_number", faxNumber != null ? Json.createValue(faxNumber) : JsonValue.NULL);
+        objBuilder.add("address", address != null ? Json.createValue(address) : JsonValue.NULL);
+        objBuilder.add("city", city != null ? Json.createValue(city) : JsonValue.NULL);
+        objBuilder.add("state_province", stateProvince != null ? Json.createValue(stateProvince) : JsonValue.NULL);
+        objBuilder.add("zip_postal_code", zipPostalCode != null ? Json.createValue(zipPostalCode) : JsonValue.NULL);
+        objBuilder.add("country_region", countryRegion != null ? Json.createValue(countryRegion) : JsonValue.NULL);
+        objBuilder.add("web_page", webPage != null ? Json.createValue(webPage) : JsonValue.NULL);
+        objBuilder.add("notes", notes != null ? Json.createValue(notes) : JsonValue.NULL);
     
         // Convert byte[] to Base64 if attachments is not null
-        if (c.getAttachments() != null) {
-            String encodedAttachments = Base64.getEncoder().encodeToString(c.getAttachments());
+        if (attachments != null) {
+            String encodedAttachments = Base64.getEncoder().encodeToString(attachments);
             objBuilder.add("attachments", encodedAttachments);
         } else {
             objBuilder.add("attachments", JsonValue.NULL);
