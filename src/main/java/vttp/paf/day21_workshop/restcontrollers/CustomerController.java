@@ -23,14 +23,14 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api")
 public class CustomerController {
-    
+
     @Autowired
     private CustomerService customerSvc;
 
     @Autowired
     private OrderService orderSvc;
 
-    @GetMapping("/customers")
+    @GetMapping(path="/customers", produces="application/json")
     public ResponseEntity<String> getCustomers(
         @RequestParam(name="limit", defaultValue="5") int limit,
         @RequestParam(name="offset", defaultValue="0") int offset
@@ -45,7 +45,7 @@ public class CustomerController {
         return ResponseEntity.ok(arrBuilder.build().toString());
     }
 
-    @GetMapping("/customer/{id}")
+    @GetMapping(path="/customer/{id}", produces="application/json")
     public ResponseEntity<String> getCustomerById(
         @PathVariable(name="id", required=true) int id
     ) 
@@ -68,7 +68,7 @@ public class CustomerController {
         return ResponseEntity.ok().body(customer.toJsonObject().toString());
     }
 
-    @GetMapping("/customer/{customerId}/orders")
+    @GetMapping(path="/customer/{customerId}/orders", produces="application/json")
     public ResponseEntity<String> getOrdersByCustomerId(
         @PathVariable(name="customerId", required=true) int customerId
     ) 
